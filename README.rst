@@ -43,6 +43,32 @@ Result:
 
 Changelog
 _________
+    0.4.1
+        Fix: collectstatic runner: moved to own management command collectstatic_js_reverse
+             
+
+    0.4.0
+        Add ability to save in file
+        <script src="{% static 'django_js_reverse/js/reverse.js' %}"></script>
+        to do this run ./manage.py collectstatic
+
+        Add JS_REVERSE_EXCLUDE_NAMESPACES option
+        to exclude namespaces from import
+        default is []
+
+        To exclude e.g. admin and Django Debug Toolbar:
+        ::
+            JS_REVERSE_EXCLUDE_NAMESPACES = ['admin', 'djdt']
+
+        Thank you Andertaker
+
+    0.3.4
+        New: Support for nested namespaces. Thank you hyperair
+
+        New: Support for arguments within namespace path. Thank you hyperair
+
+        New: Support for optional url arguments. Thank you hyperair
+
     0.3.3
         New: Django 1.7 support
 
@@ -94,6 +120,27 @@ Add ``'django_js_reverse'`` to your ``INSTALLED_APPS`` setting.
         'django_js_reverse',        
     )
 
+
+Usage as static file
+--------------------
+
+First generate static file by
+::
+    ./manage.py collectstatic_js_reverse
+
+If you change some urls or add plagin and wont to update reverse.js file
+run the command again.
+
+After this add file to template
+::
+    <script src="{% static 'django_js_reverse/js/reverse.js' %}"></script>
+
+
+
+
+Usage with views
+----------------
+
 Include none-cached view …
 
 ::
@@ -123,6 +170,10 @@ or, if you are using Django > 1.5
 
     <script src="{% url 'js_reverse' %}" type="text/javascript"></script>
 
+
+Options
+-------
+
 Optional you can overwrite the default javascript variable ‘Urls’ used
 to access the named urls by django setting
 
@@ -136,6 +187,16 @@ by django setting
 ::
 
     JS_REVERSE_JS_MINIFY = False
+
+
+By default all namespaces are included
+::
+    JS_REVERSE_EXCLUDE_NAMESPACES = []
+Add some namespaces things to exclude
+::
+    JS_REVERSE_EXCLUDE_NAMESPACES = ['admin', 'djdt', ...]
+
+
 
 Usage
 -----
